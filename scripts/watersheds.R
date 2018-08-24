@@ -13,8 +13,9 @@ pal = colorFactor(rainbow(7), df$Name)
 m <- leaflet() %>%
   addTiles(group = 'Open Street Map') %>%
   addProviderTiles(providers$Esri.WorldImagery, group = 'ESRI World Imagery') %>%
-  addProviderTiles(providers$Esri.WorldTerrain, group = 'ESRI World Terrain') %>%
-  setView(lng = -77.6, lat = 40, zoom = 6) %>%
+  addProviderTiles(providers$Stamen.Terrain, group = 'Stamen Terrain') %>%
+  addProviderTiles(providers$NASAGIBS.ModisTerraChlorophyll, group = 'MODIS Terra Chlorophyl') %>%
+  setView(lng = -77.6, lat = 40, zoom =5.5) %>%
   addSearchOSM() %>%
   addPolygons(data = df,
               popup = paste('River Basin:', df$Name, '<br>',
@@ -23,7 +24,7 @@ m <- leaflet() %>%
               fillColor = ~pal(df$Name),
               fillOpacity = 0.5,
               weight = 1) %>%
-  addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 'ESRI World Terrain'),
+  addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 'Stamen Terrain', 'MODIS Terra Chlorophyl'),
                    overlayGroups = c('Bay River Basins'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
   addLegend('bottomright',
