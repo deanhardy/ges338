@@ -30,9 +30,9 @@ m <- leaflet() %>%
   addTiles(group = 'Open Street Map') %>%
   addProviderTiles(providers$Esri.WorldImagery, group = 'ESRI World Imagery') %>%
   addProviderTiles(providers$Stamen.Terrain, group = 'Stamen Terrain') %>%
-  addProviderTiles(providers$NASAGIBS.ModisTerraChlorophyll, group = 'MODIS Terra Chlorophyl') %>%
-  addWMSTiles(GetURL('USGSTopo'), 
-              group = grp[1], attribution = att, layers = "0") %>%
+  # addProviderTiles(providers$NASAGIBS.ModisTerraTrueColorCR, group = 'MODIS Terra True Color') %>%
+  addWMSTiles(GetURL('USGSShadedReliefOnly'), 
+              group = grp[4], attribution = att, layers = "0") %>%
   addWMSTiles(GetURL("USGSHydroCached"),
               group = grp[5], options = opt, layers = "0") %>%
   setView(lng = -77.6, lat = 40, zoom =5.5) %>%
@@ -44,7 +44,8 @@ m <- leaflet() %>%
               fillColor = ~pal(df$Name),
               fillOpacity = 0.5,
               weight = 1) %>%
-  addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 'Stamen Terrain', 'USGS Topo'),
+  addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 
+                                  'Stamen Terrain', 'USGS Shaded Relief'),
                    overlayGroups = c('Bay River Basins', 'Hydrography'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
   addLegend('bottomright',
