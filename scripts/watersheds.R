@@ -6,7 +6,10 @@ library(tidycensus)
 library(dataRetrieval)
 library(sf)
 
-df <- st_read('data/bay_watersheds.shp') %>%
+df <- st_read('data/bay_riverbasins.shp') %>%
+  st_transform(4326)
+
+bay <- st_read('data/bay_watershed.shp') %>%
   st_transform(4326)
 
 pal = colorFactor(rainbow(7), df$Name)
@@ -37,23 +40,34 @@ m <- leaflet() %>%
               group = grp[5], options = opt, layers = "0") %>%
   setView(lng = -77.6, lat = 40, zoom =5.5) %>%
   addSearchOSM() %>%
+  addPolylines(data = bay,
+              popup = paste('Area (KM^2):', round(bay$SUM_AreaSq, 0), '<br>',
+                            'Area (MI^2):', round(bay$SUM_AreaSq * 0.386102, 0), '<br>',
+                            'States:', 'DC, DE, MD, NY, PA, VA, WV'),
+              group = 'Chesapeake Watershed',
+              color = 'black',
+              weight = 1) %>%
   addPolygons(data = df,
               popup = paste('River Basin:', df$Name, '<br>',
                             'Area (KM^2):', round(df$SUM_AreaSq, 0), '<br>',
-                            'Area (MI^2):', round(df$SUM_AreaSq * 0.386102, 0), '<br>'),
+                            'Area (MI^2):', round(df$SUM_AreaSq * 0.386102, 0), '<br>',
+                            'States:', df$states),
               group = 'Bay River Basins',
               fillColor = ~pal(df$Name),
               fillOpacity = 0.5,
-              weight = 1) %>%
+              weight = 1,
+              highlightOptions = highlightOptions(color = "black", weight = 2,
+                                                  bringToFront = TRUE)) %>%
   addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 
                                   'Stamen Terrain', 'USGS Shaded Relief'),
-                   overlayGroups = c('Bay River Basins', 'Hydrography'),
+                   overlayGroups = c('Chesapeake Watershed', 'Bay River Basins', 'Hydrography'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
   addLegend('bottomright',
             pal = pal,
             values = df$Name,
             title = 'River Basin') %>%
-  addScaleBar('bottomright')
+  addScaleBar('bottomright') %>%
+  hideGroup(c('Bay River Basins', 'Hydrography'))
 m
 
 ## exporting as html file for exploration
