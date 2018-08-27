@@ -46,7 +46,7 @@ m <- leaflet() %>%
                             'States:', 'DC, DE, MD, NY, PA, VA, WV'),
               group = 'Chesapeake Watershed',
               color = 'black',
-              weight = 1) %>%
+              weight = 3) %>%
   addPolygons(data = df,
               popup = paste('River Basin:', df$Name, '<br>',
                             'Area (KM^2):', round(df$SUM_AreaSq, 0), '<br>',
