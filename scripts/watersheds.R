@@ -39,7 +39,8 @@ m <- leaflet() %>%
   addSearchOSM() %>%
   addPolygons(data = df,
               popup = paste('River Basin:', df$Name, '<br>',
-                            'Area (KM^2):', df$SUM_AreaSq, '<br>'),
+                            'Area (KM^2):', round(df$SUM_AreaSq, 0), '<br>',
+                            'Area (MI^2):', round(df$SUM_AreaSq * 0.386102, 0), '<br>'),
               group = 'Bay River Basins',
               fillColor = ~pal(df$Name),
               fillOpacity = 0.5,
