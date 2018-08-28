@@ -34,6 +34,7 @@ m <- leaflet() %>%
   addProviderTiles(providers$Esri.WorldImagery, group = 'ESRI World Imagery') %>%
   addProviderTiles(providers$Esri.WorldPhysical, group = 'ESRI World Physical') %>%
   addProviderTiles(providers$Stamen.Terrain, group = 'Stamen Terrain') %>%
+  addProviderTiles(providers$NASAGIBS.ViirsEarthAtNight2012, group = 'NASA Earth at Night') %>%
   # addProviderTiles(providers$NASAGIBS.ModisTerraTrueColorCR, group = 'MODIS Terra True Color') %>%
   addWMSTiles(GetURL('USGSShadedReliefOnly'), 
               group = grp[4], attribution = att, layers = "0") %>%
@@ -45,9 +46,16 @@ m <- leaflet() %>%
               popup = paste('Area (KM^2):', round(bay$SUM_AreaSq, 0), '<br>',
                             'Area (MI^2):', round(bay$SUM_AreaSq * 0.386102, 0), '<br>',
                             'States:', 'DC, DE, MD, NY, PA, VA, WV'),
-              group = 'Chesapeake Watershed',
+              group = 'Chesapeake Watershed (dark)',
               color = 'black',
               weight = 3) %>%
+  addPolylines(data = bay,
+               popup = paste('Area (KM^2):', round(bay$SUM_AreaSq, 0), '<br>',
+                             'Area (MI^2):', round(bay$SUM_AreaSq * 0.386102, 0), '<br>',
+                             'States:', 'DC, DE, MD, NY, PA, VA, WV'),
+               group = 'Chesapeake Watershed (light)',
+               color = 'yellow',
+               weight = 3) %>%
   addPolygons(data = df,
               popup = paste('River Basin:', df$Name, '<br>',
                             'Area (KM^2):', round(df$SUM_AreaSq, 0), '<br>',
@@ -61,15 +69,16 @@ m <- leaflet() %>%
                                                   bringToFront = TRUE)) %>%
   addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 
                                   'ESRI World Physical', 'USGS Shaded Relief',
-                                  'Stamen Terrain'),
-                   overlayGroups = c('Chesapeake Watershed', 'Bay River Basins', 'Hydrography'),
+                                  'Stamen Terrain', 'NASA Earth at Night'),
+                   overlayGroups = c('Chesapeake Watershed (dark)', 'Chesapeake Watershed (light)', 
+                                     'Bay River Basins', 'Hydrography'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
-  addLegend('bottomright',
-            pal = pal,
-            values = df$Name,
-            title = 'River Basin') %>%
+  # addLegend('bottomright',
+  #           pal = pal,
+  #           values = df$Name,
+  #           title = 'River Basin') %>%
   addScaleBar('bottomright') %>%
-  hideGroup(c('Bay River Basins', 'Hydrography'))
+  hideGroup(c('Chesapeake Watershed (light)', 'Bay River Basins', 'Hydrography'))
 m
 
 ## exporting as html file for exploration
