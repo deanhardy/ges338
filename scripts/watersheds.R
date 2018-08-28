@@ -60,8 +60,8 @@ m <- leaflet() %>%
               highlightOptions = highlightOptions(color = "black", weight = 2,
                                                   bringToFront = TRUE)) %>%
   addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 
-                                  'ESRI World Physical',
-                                  'Stamen Terrain', 'USGS Shaded Relief'),
+                                  'ESRI World Physical', 'USGS Shaded Relief',
+                                  'Stamen Terrain'),
                    overlayGroups = c('Chesapeake Watershed', 'Bay River Basins', 'Hydrography'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
   addLegend('bottomright',
