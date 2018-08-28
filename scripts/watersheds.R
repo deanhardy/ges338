@@ -32,6 +32,7 @@ opt <- leaflet::WMSTileOptions(format = "image/png", transparent = TRUE)
 m <- leaflet() %>%
   addTiles(group = 'Open Street Map') %>%
   addProviderTiles(providers$Esri.WorldImagery, group = 'ESRI World Imagery') %>%
+  addProviderTiles(providers$Esri.WorldPhysical, group = 'ESRI World Physical') %>%
   addProviderTiles(providers$Stamen.Terrain, group = 'Stamen Terrain') %>%
   # addProviderTiles(providers$NASAGIBS.ModisTerraTrueColorCR, group = 'MODIS Terra True Color') %>%
   addWMSTiles(GetURL('USGSShadedReliefOnly'), 
@@ -59,6 +60,7 @@ m <- leaflet() %>%
               highlightOptions = highlightOptions(color = "black", weight = 2,
                                                   bringToFront = TRUE)) %>%
   addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 
+                                  'ESRI World Physical',
                                   'Stamen Terrain', 'USGS Shaded Relief'),
                    overlayGroups = c('Chesapeake Watershed', 'Bay River Basins', 'Hydrography'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
@@ -73,8 +75,8 @@ m
 ## exporting as html file for exploration
 library(htmlwidgets)
 saveWidget(m, 
-           file="C:/r_projects/ges338/docs/bayriverbasins.html",
-           title = "Chesapeake Bay River Basins")
+           file="C:/r_projects/ges338/docs/bay.html",
+           title = "Chesapeake Bay")
 
 
   
