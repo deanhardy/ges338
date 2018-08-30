@@ -27,7 +27,9 @@ grp <- c("USGS Topo", "USGS Imagery Only", "USGS Imagery Topo",
 att <- paste0("<a href='https://www.usgs.gov/'>",
               "U.S. Geological Survey</a> | ",
               "<a href='https://www.usgs.gov/laws/policies_notices.html'>",
-              "Policies</a>")
+              "Policies</a> | ",
+              "<a href='https://www.mrlc.gov/nlcd11_leg.php'>",
+              "Landcover Legend</a>")
 
 opt <- leaflet::WMSTileOptions(format = "image/png", transparent = TRUE)
 
@@ -41,7 +43,7 @@ m <- leaflet() %>%
               group = grp[4], attribution = att, layers = "0") %>%
   addWMSTiles(GetURL("USGSHydroCached"),
               group = grp[5], options = opt, layers = "0") %>%
-  addWMSTiles(lc_url, layers = '0', group = grp[6], attribution = att,
+  addWMSTiles(lc_url, layers = '1', group = grp[6], attribution = att,
               options = opt) %>%
   setView(lng = -77.6, lat = 40, zoom = 7) %>%
   addSearchOSM() %>%
