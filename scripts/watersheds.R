@@ -15,12 +15,14 @@ bay <- st_read('data/bay_watershed.shp') %>%
 pal = colorFactor(rainbow(7), df$Name)
 # nhd_wms_url <- "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?request=GetCapabilities&service=WMS"
 
+lc_url <- "https://smallscale.nationalmap.gov/arcgis/services/LandCover/MapServer/WMSServer"
+
 GetURL <- function(service, host = "basemap.nationalmap.gov") {
   sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer", host, service)
 }
 
 grp <- c("USGS Topo", "USGS Imagery Only", "USGS Imagery Topo",
-         "USGS Shaded Relief", "Hydrography")
+         "USGS Shaded Relief", "Hydrography", "Landcover")
 
 att <- paste0("<a href='https://www.usgs.gov/'>",
               "U.S. Geological Survey</a> | ",
@@ -35,11 +37,12 @@ m <- leaflet() %>%
   addProviderTiles(providers$Esri.WorldPhysical, group = 'ESRI World Physical') %>%
   addProviderTiles(providers$Stamen.Terrain, group = 'Stamen Terrain') %>%
   addProviderTiles(providers$NASAGIBS.ViirsEarthAtNight2012, group = 'NASA Earth at Night') %>%
-  # addProviderTiles(providers$NASAGIBS.ModisTerraTrueColorCR, group = 'MODIS Terra True Color') %>%
   addWMSTiles(GetURL('USGSShadedReliefOnly'), 
               group = grp[4], attribution = att, layers = "0") %>%
   addWMSTiles(GetURL("USGSHydroCached"),
               group = grp[5], options = opt, layers = "0") %>%
+  addWMSTiles(lc_url, layers = '1', group = grp[6], attribution = att,
+              options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
   setView(lng = -77.6, lat = 40, zoom =5.5) %>%
   addSearchOSM() %>%
   addPolylines(data = bay,
@@ -69,7 +72,8 @@ m <- leaflet() %>%
                                                   bringToFront = TRUE)) %>%
   addLayersControl(baseGroups = c('Open Street Map', 'ESRI World Imagery', 
                                   'ESRI World Physical', 'USGS Shaded Relief',
-                                  'Stamen Terrain', 'NASA Earth at Night'),
+                                  'USGS Landcover', 'Stamen Terrain', 
+                                  'NASA Earth at Night'),
                    overlayGroups = c('Chesapeake Watershed (dark)', 'Chesapeake Watershed (light)', 
                                      'Bay River Basins', 'Hydrography'),
                    options = layersControlOptions(collapsed = TRUE)) %>%
