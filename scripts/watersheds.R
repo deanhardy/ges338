@@ -43,7 +43,7 @@ m <- leaflet() %>%
               group = grp[5], options = opt, layers = "0") %>%
   addWMSTiles(lc_url, layers = '1', group = grp[6], attribution = att,
               options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
-  setView(lng = -77.6, lat = 40, zoom =5.5) %>%
+  setView(lng = -77.6, lat = 40, zoom = 7) %>%
   addSearchOSM() %>%
   addPolylines(data = bay,
               popup = paste('Area (KM^2):', round(bay$SUM_AreaSq, 0), '<br>',
