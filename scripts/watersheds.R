@@ -41,8 +41,8 @@ m <- leaflet() %>%
               group = grp[4], attribution = att, layers = "0") %>%
   addWMSTiles(GetURL("USGSHydroCached"),
               group = grp[5], options = opt, layers = "0") %>%
-  addWMSTiles(lc_url, layers = '1', group = grp[6], attribution = att,
-              options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
+  addWMSTiles(lc_url, layers = '0', group = grp[6], attribution = att,
+              options = opt) %>%
   setView(lng = -77.6, lat = 40, zoom = 7) %>%
   addSearchOSM() %>%
   addPolylines(data = bay,
