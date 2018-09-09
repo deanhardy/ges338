@@ -122,8 +122,16 @@ dev.off()
 ######################
 
 fig <- ggplot(filter(dat, State %in% c('Maryland', 'Virginia'), Species == 'Eastern Oyster')) +
-  geom_line(aes(Year, metric_tons, color = State, linetype = Species)) + 
+  geom_line(aes(Year, metric_tons, color = State)) + 
+  # geom_line(aes(Year, filter(dat$metric_tons, State == 'Maryland', Species == 'Eastern Oyster'))) + 
   # geom_point(aes(Year, metric_tons, color = State, shape = Species)) +
+  geom_vline(xintercept = as.Date('1959-01-01'), linetype = 'dashed') +
+  geom_text(x = as.Date('1950-01-01'), y = 11900, label = '<<< Derma hits in 1949',
+            hjust = -0.1) +
+  geom_text(x = as.Date('1959-01-01'), y = 11500, label = '<<< MSX hits in 1959',
+            hjust = -0.05) +
+  geom_text(x = as.Date('1983-01-01'), y = 5500, label = '<<< Drought drives declinein mid-80s',
+            hjust = -0.05) +
   scale_x_date(name = 'Year',
                date_breaks = '10 years',
                date_labels = '%Y',
