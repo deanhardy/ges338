@@ -130,6 +130,49 @@ fig
 dev.off()
 
 
+######################
+## Blue Crab
+######################
+
+fig <- ggplot(filter(dat, State %in% c('Maryland', 'Virginia'), Species == 'Blue Crab')) +
+  geom_line(aes(Year, metric_tons, color = State)) + 
+  # geom_point(aes(Year, metric_tons, color = State, shape = Species)) +
+  scale_x_date(name = 'Year',
+               date_breaks = '10 years',
+               date_labels = '%Y',
+               expand = c(0,0)) +
+  scale_y_continuous('Metric Tons') +
+  ggtitle('Blue Crab Commercial Landings (Weight; 1950-2016)') +
+  theme(panel.background = element_rect(fill = 'white', color = 'black'),
+        panel.grid.major.x = element_line(color = 'grey', linetype = 'dashed'),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank())
+fig
+
+tiff('figures/crabs_landings.tiff', height = 7, width = 10, units = 'in', res = 300, compression = 'lzw')
+fig
+dev.off()
+
+## plot US dollars
+fig <- ggplot(filter(dat, State %in% c('Maryland', 'Virginia'), Species == 'Blue Crab')) +
+  geom_line(aes(Year, dollars/1000000, color = State)) + 
+  scale_x_date(name = 'Year',
+               date_breaks = '10 years',
+               date_labels = '%Y',
+               expand = c(0,0)) +
+  scale_y_continuous(name = 'Million Dollars (US$)') +
+  ggtitle('Blue Crab Commercial Landings (Dollars; 1950-2016)') +
+  theme(panel.background = element_rect(fill = 'white', color = 'black'),
+        panel.grid.major.x = element_line(color = 'grey', linetype = 'dashed'),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank())
+fig
+
+tiff('figures/crabs_dollars.tiff', height = 7, width = 10, units = 'in', res = 300, compression = 'lzw')
+fig
+dev.off()
+
+
 
 ######################
 ## OYSTER
