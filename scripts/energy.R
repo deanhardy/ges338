@@ -41,3 +41,26 @@ ggplot(pcap) +
   ggtitle("Per Capita Energy Consumption (2016) in the Chesapeaky Bay's 7 Jurisdictions") + 
   scale_y_continuous(name = 'Total Consumption (Million Btu per capita)') + 
   scale_x_discrete(name = 'State')
+
+prod_sum <- prod %>%
+  group_by(Source) %>%
+  summarise(Btu_sum = sum(Btu, na.rm = TRUE)) %>%
+  filter(!(Source %in% c('Biofuels', 'Other.Renewables', 'Total')))
+
+ggplot(prod_sum) +
+  geom_col(aes(reorder(Source, -Btu_sum), Btu_sum)) + 
+  ggtitle("Energy Production (2016) in the Chesapeaky Bay's 7 Jurisdictions") + 
+  scale_y_continuous(name = 'Total Production (Trillion Btu)') + 
+  scale_x_discrete(name = 'Energy Sector')
+
+cons_sum <- cons %>%
+  group_by(Source) %>%
+  summarise(Btu_sum = sum(Btu, na.rm = TRUE)) %>%
+  filter(!(Source %in% c('Biofuels', 'Other.Renewables', 'Total')))
+
+ggplot(cons_sum) +
+  geom_col(aes(reorder(Source, -Btu_sum), Btu_sum)) + 
+  ggtitle("Energy Consumption (2016) in the Chesapeaky Bay's 7 Jurisdictions") + 
+  scale_y_continuous(name = 'Total Production (Trillion Btu)') + 
+  scale_x_discrete(name = 'Consumption Sector')
+         
